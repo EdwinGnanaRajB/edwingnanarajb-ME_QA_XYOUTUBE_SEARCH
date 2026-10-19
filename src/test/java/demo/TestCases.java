@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -51,7 +52,8 @@ public class TestCases extends ExcelDataProvider {
     private static final Pattern GENRE =
             Pattern.compile("(?i)\\b(Comedy|Animation|Drama|Action|Adventure|Thriller|Romantic)\\b");
     private static final Pattern COUNT_LINE =
-            Pattern.compile("(?i)^\\s*([\\d,.]+)\\s*(K|M|B|Cr|L)?\\s*(views?)?\\s*$");
+            Pattern.compile(
+                    "(?i)^\\s*([\\d,.]+)\\s*(crores?|cr|lakhs?|l|k|m|b)?\\s*(views?)?\\s*$");
     private static final Pattern TIMESTAMP =
             Pattern.compile("(?i)^\\s*(?:streamed\\s+)?\\d+\\s*"
                     + "(?:seconds?|minutes?|hours?|days?|weeks?|months?|years?|"
@@ -145,7 +147,13 @@ public class TestCases extends ExcelDataProvider {
     @Test
     public void testCase04() {
         driver.get(NEWS_CHANNEL_URL);
-        waitForElements(NEWS_POSTS);
+        try {
+            waitForElements(NEWS_POSTS);
+        } catch (TimeoutException firstLoadTimeout) {
+            System.out.println("News posts did not load; retrying the channel once.");
+            driver.get(NEWS_CHANNEL_URL);
+            waitForElements(NEWS_POSTS);
+        }
 
         List<WebElement> newsPosts = driver.findElements(NEWS_POSTS);
         Assert.assertTrue(newsPosts.size() >= 3,
@@ -165,11 +173,15 @@ public class TestCases extends ExcelDataProvider {
         Assert.assertFalse(searchTerm.isEmpty(), "The search keyword must not be blank");
 
         String encodedSearch = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8);
-        driver.get(YOUTUBE_URL + "/results?search_query=" + encodedSearch);
+        driver.get(YOUTUBE_URL + "/results?search_query=" + encodedSearch + "&sp=CAM%3D");
+        By searchInput = By.name("search_query");
+        Wrappers.typeElement(driver, searchInput, searchTerm);
+        Wrappers.submitElement(driver, searchInput);
         waitForElements(VIDEO_CARDS);
 
         Map<String, Long> seenVideoViews = new LinkedHashMap<>();
         int scrolls = 0;
+        int stalledBottomScrolls = 0;
         while (sumViews(seenVideoViews) < TARGET_VIEWS && scrolls < 100) {
             collectVideoViews(seenVideoViews);
             if (sumViews(seenVideoViews) >= TARGET_VIEWS) {
@@ -185,8 +197,12 @@ public class TestCases extends ExcelDataProvider {
                     new WebDriverWait(driver, Duration.ofSeconds(8)).until(currentDriver ->
                             currentDriver.findElements(VIDEO_CARDS).size() > previousCardCount
                                     || pageHeight() > previousPageHeight);
+                    stalledBottomScrolls = 0;
                 } catch (TimeoutException noMoreResults) {
-                    break;
+                    stalledBottomScrolls++;
+                    if (stalledBottomScrolls >= 4) {
+                        break;
+                    }
                 }
             }
         }
@@ -242,14 +258,19 @@ public class TestCases extends ExcelDataProvider {
 
     private void collectVideoViews(Map<String, Long> videoViews) {
         for (WebElement card : driver.findElements(VIDEO_CARDS)) {
-            long views = findViewCount(card.getText());
-            if (views <= 0) {
+            try {
+                long views = findViewCount(card.getText());
+                if (views <= 0) {
+                    continue;
+                }
+
+                List<WebElement> links = card.findElements(By.cssSelector("a[href*='/watch']"));
+                String key = links.isEmpty() ? card.getText() : links.get(0).getAttribute("href");
+                videoViews.putIfAbsent(key, views);
+            } catch (StaleElementReferenceException rerenderedCard) {
+                System.out.println("A video result refreshed during collection; it will be retried.");
                 continue;
             }
-
-            List<WebElement> links = card.findElements(By.cssSelector("a[href*='/watch']"));
-            String key = links.isEmpty() ? card.getText() : links.get(0).getAttribute("href");
-            videoViews.putIfAbsent(key, views);
         }
     }
 
@@ -279,6 +300,8 @@ public class TestCases extends ExcelDataProvider {
                 value *= 1_000;
                 break;
             case "l":
+            case "lakh":
+            case "lakhs":
                 value *= 100_000;
                 break;
             case "m":
@@ -288,6 +311,8 @@ public class TestCases extends ExcelDataProvider {
                 value *= 1_000_000_000;
                 break;
             case "cr":
+            case "crore":
+            case "crores":
                 value *= 10_000_000;
                 break;
             default:
