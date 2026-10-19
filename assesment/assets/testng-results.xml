@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results total="9" passed="9" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2026-10-19T07:50:51Z" name="Test Suite for Buildout" finished-at="2026-10-19T07:57:22Z" duration-ms="391610">
+    <groups>
+    </groups>
+    <test started-at="2026-10-19T07:50:51Z" name="Test Cases for Buildout" finished-at="2026-10-19T07:57:22Z" duration-ms="391610">
+      <class name="demo.TestCases">
+        <test-method is-config="true" signature="startBrowser()[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:20:51Z" name="startBrowser" finished-at="2026-10-19T13:20:52Z" duration-ms="1480" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- startBrowser -->
+        <test-method signature="testCase01()[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:20:52Z" name="testCase01" finished-at="2026-10-19T13:20:55Z" duration-ms="3012" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase01 -->
+        <test-method signature="testCase02()[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:20:55Z" name="testCase02" finished-at="2026-10-19T13:21:01Z" duration-ms="6300" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase02 -->
+        <test-method signature="testCase03()[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:21:01Z" name="testCase03" finished-at="2026-10-19T13:21:06Z" duration-ms="4177" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase03 -->
+        <test-method signature="testCase04()[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:21:06Z" name="testCase04" finished-at="2026-10-19T13:21:12Z" duration-ms="6576" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase04 -->
+        <test-method signature="testCase05(java.lang.Object)[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:21:13Z" name="testCase05" data-provider="excelData" finished-at="2026-10-19T13:22:04Z" duration-ms="51196" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Movies]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase05 -->
+        <test-method signature="testCase05(java.lang.Object)[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:22:04Z" name="testCase05" data-provider="excelData" finished-at="2026-10-19T13:22:09Z" duration-ms="5406" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Music]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase05 -->
+        <test-method signature="testCase05(java.lang.Object)[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:22:09Z" name="testCase05" data-provider="excelData" finished-at="2026-10-19T13:22:15Z" duration-ms="5506" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Games]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase05 -->
+        <test-method signature="testCase05(java.lang.Object)[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:22:15Z" name="testCase05" data-provider="excelData" finished-at="2026-10-19T13:26:59Z" duration-ms="284731" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[India]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase05 -->
+        <test-method signature="testCase05(java.lang.Object)[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:26:59Z" name="testCase05" data-provider="excelData" finished-at="2026-10-19T13:27:22Z" duration-ms="22334" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[UK]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCase05 -->
+        <test-method is-config="true" signature="endTest()[pri:0, instance:demo.TestCases@1d470d0]" started-at="2026-10-19T13:27:22Z" name="endTest" finished-at="2026-10-19T13:27:22Z" duration-ms="486" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- endTest -->
+      </class> <!-- demo.TestCases -->
+    </test> <!-- Test Cases for Buildout -->
+  </suite> <!-- Test Suite for Buildout -->
+</testng-results>

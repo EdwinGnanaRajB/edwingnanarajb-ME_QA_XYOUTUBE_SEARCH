@@ -58,7 +58,9 @@ test {
 
 }
 
-mainClassName = 'demo.App'
+application {
+    mainClass = 'demo.App'
+}
 
 checkstyle {
     toolVersion = '8.45' // Check for the latest version compatible with your setup
